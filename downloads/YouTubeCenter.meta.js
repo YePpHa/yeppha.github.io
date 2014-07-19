@@ -37,8 +37,8 @@
 // @grant           GM_addStyle
 // @grant           GM_log
 // @grant           GM_registerMenuCommand
-// @updateURL       http://userscripts.org/scripts/source/114002.meta.js
-// @downloadURL     http://userscripts.org/scripts/source/114002.user.js
+// @updateURL       https://yeppha.github.io/downloads/YouTubeCenter.meta.js
+// @downloadURL     https://yeppha.github.io/downloads/YouTubeCenter.user.js
 // @updateVersion   151
 // @run-at          document-start
 // @priority        9001
