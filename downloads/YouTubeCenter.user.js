@@ -24,11 +24,11 @@
 // @id              YouTubeCenter
 // @name            YouTube Center
 // @namespace       http://www.facebook.com/YouTubeCenter
-// @version         2.1.1
+// @version         2.1.2
 // @author          Jeppe Rune Mortensen <jepperm@gmail.com>
 // @description     YouTube Center contains all kind of different useful functions which makes your visit on YouTube much more entertaining.
-// @icon            https://raw.github.com/YePpHa/YouTubeCenter/master/assets/logo-48x48.png
-// @icon64          https://raw.github.com/YePpHa/YouTubeCenter/master/assets/logo-64x64.png
+// @icon            https://raw.github.com/YePpHa/YouTubeCenter/master/assets/icon48.png
+// @icon64          https://raw.github.com/YePpHa/YouTubeCenter/master/assets/icon64.png
 // @domain          userscripts.org
 // @domain          youtube.com
 // @domain          www.youtube.com
@@ -90,7 +90,7 @@
     if (typeof func === "string") {
       func = "function(){" + func + "}";
     }
-    script.appendChild(document.createTextNode("(" + func + ")(true, 0, false, 355);\n//# sourceURL=YouTubeCenter.js"));
+    script.appendChild(document.createTextNode("(" + func + ")(true, 0, false, 357);\n//# sourceURL=YouTubeCenter.js"));
     p.appendChild(script);
     p.removeChild(script);
   }
@@ -3096,7 +3096,7 @@
         unloads.push(unload);
       };
     })();
-    ytcenter.version = "2.1.1";
+    ytcenter.version = "2.1.2";
     ytcenter.revision = 151;
     ytcenter.icon = {};
     ytcenter.page = "none";
@@ -11743,7 +11743,6 @@
             } else if (response.responseText.match(regex)) {
               con.log("[updateSignatureDecipher] Using regex 2");
               a = regex.exec(response.responseText)[1];
-              console.log(a);
               if (a.match(/a=([a-zA-Z0-9]+)\.([a-zA-Z0-9]+)\(a,([0-9]+)\)/g)) {
                 var commonObject = null;
                 var arr = a.split(";");
@@ -11751,7 +11750,6 @@
                 var methodValues = [];
                 for (var i = 0, len = arr.length - 1; i < len; i++) {
                   var tokens = /a=([a-zA-Z0-9]+)\.([a-zA-Z0-9]+)\(a,([0-9]+)\)/g.exec(arr[i]);
-                  console.log(tokens);
                   if (commonObject !== tokens[1] && commonObject !== null) {
                     throw "Unknown cipher method!";
                   } else {
@@ -11761,32 +11759,32 @@
                   methodValues.push(tokens[3]);
                 }
                 
-                var prefix = "var " + ytcenter.utils.escapeRegExp(commonObject) + "=\\{";
+                var prefix = "var " + ytcenter.utils.escapeRegExp(commonObject) + "=\\{(";
                 
                 var uniqueMethods = [];
+                var regexMeth = [];
                 for (var i = 0, len = methods.length; i < len; i++) {
                   if (!ytcenter.utils.inArray(uniqueMethods, methods[i])) {
                     uniqueMethods.push(methods[i]);
+                    regexMeth.push(ytcenter.utils.escapeRegExp(methods[i]));
                   }
                 }
                 
                 for (var i = 0, len = uniqueMethods.length; i < len; i++) {
-                  if (i > 0) prefix += ",";
-                  prefix += ytcenter.utils.escapeRegExp(uniqueMethods[i]) + ":function\\(([a-zA-Z0-9,]+)\\)\\{(.*?)\\}";
+                  if (i > 0) prefix += "|";
+                  prefix += "(([a-zA-Z0-9]+):function\\(([a-zA-Z0-9,]+)\\)\\{(.*?)\\}[,]?)";
                 }
                 
-                prefix += "\\}";
-                
-                console.log(prefix);
+                prefix += ")\\}";
                 
                 var regexMethod = new RegExp(prefix, "g").exec(response.responseText);
+                var definedFunctions = new RegExp("([a-zA-Z0-9]+):function\\(([a-zA-Z0-9,]+)\\)\\{(.*?)\\}", "g");
                 
                 ytcenter.settings['signatureDecipher'] = [];
                 
-                for (var i = 0, len = uniqueMethods.length; i < len; i++) {
-                  var args = regexMethod[i*2 + 1];
-                  var func = regexMethod[i*2 + 2];
-                  ytcenter.settings['signatureDecipher'].push({ func: "function", name: uniqueMethods[i], value: func });
+                var definedFunction;
+                while (definedFunction = definedFunctions.exec(regexMethod[0])) {
+                  ytcenter.settings['signatureDecipher'].push({ func: "function", name: definedFunction[1], value: definedFunction[3] });
                 }
                 
                 for (var i = 0, len = methods.length; i < len; i++) {
@@ -20852,12 +20850,16 @@
         
         var page = document.getElementById("page");
         var player = document.getElementById("player-legacy") || document.getElementById("player");
-        if (large || ytcenter.settings.ytOnlyStageMode) {
-          ytcenter.utils.addClass(page, "watch-stage-mode");
-          ytcenter.utils.removeClass(page, "watch-non-stage-mode");
+        if (ytcenter.settings.ytOnlyStageMode) {
+          if (large) {
+            ytcenter.utils.addClass(page, "watch-stage-mode");
+            ytcenter.utils.removeClass(page, "watch-non-stage-mode");
+          } else {
+            ytcenter.utils.addClass(page, "watch-non-stage-mode");
+            ytcenter.utils.removeClass(page, "watch-stage-mode");
+          }
         } else {
-          ytcenter.utils.removeClass(page, "watch-stage-mode");
-          ytcenter.utils.addClass(page, "watch-non-stage-mode");
+          ytcenter.utils.removeClass(page, "watch-stage-mode watch-non-stage-mode");
         }
         var isWatchNonStage101 = ytcenter.utils.hasClass(document.body, "appbar-flexwatch") && 1294 <= innerWidth && 680 <= innerHeight;
         var isWatchNonStage102 = ytcenter.utils.hasClass(document.body, "appbar-flexwatch-mini") && 1294 <= innerWidth && 630 <= innerHeight;
@@ -23232,9 +23234,6 @@
           ytcenter.player.disablePlayerUpdate = false;
           uw.ytplayer = new PlayerConfig(function(config){
             con.log("[Player Config Global] A new player configuration change request!", config);
-            if (config && config.html5) {
-              con.log("[Player] HTML5 configuration detected");
-            }
             if (config) {
               ytcenter.player.setConfig(ytcenter.player.modifyConfig(ytcenter.getPage(), config));
               if (ytcenter.player.config.html5) ytcenter.player.disablePlayerUpdate = true;
