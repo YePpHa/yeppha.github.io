@@ -24,12 +24,12 @@
 // @id              YouTubeCenter
 // @name            YouTube Center
 // @namespace       http://www.facebook.com/YouTubeCenter
-// @version         2.1.2
+// @version         2.1.3
 // @author          Jeppe Rune Mortensen <jepperm@gmail.com>
 // @description     YouTube Center contains all kind of different useful functions which makes your visit on YouTube much more entertaining.
 // @icon            https://raw.github.com/YePpHa/YouTubeCenter/master/assets/icon48.png
 // @icon64          https://raw.github.com/YePpHa/YouTubeCenter/master/assets/icon64.png
-// @domain          userscripts.org
+// @domain          yeppha.github.io
 // @domain          youtube.com
 // @domain          www.youtube.com
 // @domain          gdata.youtube.com
@@ -43,7 +43,7 @@
 // @match           https://www.youtube.com/*
 // @match           http://youtube.com/*
 // @match           https://youtube.com/*
-// @match           http://userscripts.org/scripts/source/114002.meta.js
+// @match           https://yeppha.github.io/downloads/YouTubeCenter.meta.js
 // @match           http://s.ytimg.com/yts/jsbin/*
 // @match           https://s.ytimg.com/yts/jsbin/*
 // @match           https://raw.github.com/YePpHa/YouTubeCenter/master/*
@@ -3096,7 +3096,7 @@
         unloads.push(unload);
       };
     })();
-    ytcenter.version = "2.1.2";
+    ytcenter.version = "2.1.3";
     ytcenter.revision = 151;
     ytcenter.icon = {};
     ytcenter.page = "none";
@@ -13412,7 +13412,7 @@
           }
           ytcenter.utils.xhr({
             method: "GET",
-            url: "http://userscripts.org/scripts/source/114002.meta.js",
+            url: "https://yeppha.github.io/downloads/YouTubeCenter.meta.js",
             headers: {
               "Content-Type": "text/plain"
             },
@@ -13479,17 +13479,17 @@
                   var f4 = document.createTextNode(" ");
                   var f5 = document.createElement("a");
                   if (identifier === 0) {
-                    f5.href = "http://userscripts.org/scripts/source/114002.user.js";
+                    f5.href = "https://yeppha.github.io/downloads/YouTubeCenter.user.js";
                   } else if (identifier === 1) {
-                    f5.href = "https://dl.dropboxusercontent.com/u/13162258/YouTube%20Center/YouTubeCenter.crx";
+                    f5.href = "https://yeppha.github.io/downloads/YouTubeCenter.crx";
                   } else if (identifier === 2) {
-                    f5.href = "https://dl.dropboxusercontent.com/u/13162258/YouTube%20Center/YouTubeCenter.mxaddon";
+                    f5.href = "https://yeppha.github.io/downloads/YouTubeCenter.mxaddon";
                   } else if (identifier === 3) {
-                    f5.href = "https://dl.dropboxusercontent.com/u/13162258/YouTube%20Center/YouTubeCenter.xpi";
+                    f5.href = "https://yeppha.github.io/downloads/YouTubeCenter.xpi";
                   } else if (identifier === 4) {
-                    f5.href = "https://dl.dropboxusercontent.com/u/13162258/YouTube%20Center/YouTubeCenter.safariextz";
+                    f5.href = "https://yeppha.github.io/downloads/YouTubeCenter.safariextz";
                   } else if (identifier === 5) {
-                    f5.href = "https://dl.dropboxusercontent.com/u/13162258/YouTube%20Center/YouTubeCenter.oex";
+                    f5.href = "https://yeppha.github.io/downloads/YouTubeCenter.oex";
                   }
                   f5.setAttribute("target", "_blank");
                   f5.textContent = "YouTube Center v" + ver;
@@ -13503,8 +13503,8 @@
                     f9.href = "https://addons.mozilla.org/en-us/firefox/addon/youtube-center/";
                     f9.textContent = "addons.mozilla.org";
                   } else {
-                    f9.href = "http://userscripts.org/scripts/show/114002";
-                    f9.textContent = "userscripts.org";
+                    f9.href = "https://github.com/YePpHa/YouTubeCenter/wiki";
+                    f9.textContent = "github.com/YePpHa/YouTubeCenter/";
                   }
                   
                   cnme.appendChild(f1);
