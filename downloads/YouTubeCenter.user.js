@@ -24,7 +24,7 @@
 // @id              YouTubeCenter
 // @name            YouTube Center
 // @namespace       http://www.facebook.com/YouTubeCenter
-// @version         2.1.3
+// @version         2.1.4
 // @author          Jeppe Rune Mortensen <jepperm@gmail.com>
 // @description     YouTube Center contains all kind of different useful functions which makes your visit on YouTube much more entertaining.
 // @icon            https://raw.github.com/YePpHa/YouTubeCenter/master/assets/icon48.png
@@ -90,7 +90,7 @@
     if (typeof func === "string") {
       func = "function(){" + func + "}";
     }
-    script.appendChild(document.createTextNode("(" + func + ")(true, 0, false, 357);\n//# sourceURL=YouTubeCenter.js"));
+    script.appendChild(document.createTextNode("(" + func + ")(true, 0, false, 359);\n//# sourceURL=YouTubeCenter.js"));
     p.appendChild(script);
     p.removeChild(script);
   }
@@ -3096,7 +3096,7 @@
         unloads.push(unload);
       };
     })();
-    ytcenter.version = "2.1.3";
+    ytcenter.version = "2.1.4";
     ytcenter.revision = 151;
     ytcenter.icon = {};
     ytcenter.page = "none";
@@ -18374,6 +18374,19 @@
       }
       return "";
     };
+    ytcenter.video.removeNonAlphanumericCharacters = function(text){
+      if (ytcenter.settings.fixfilename) {
+        var buffer = "";
+        for (var i = 0, len = text.length; i < len; i++) {
+          if (text.charAt(i).match(/[0-9a-zA-Z ]/i)) {
+            buffer += text.charAt(i);
+          }
+        }
+        return buffer;
+      } else {
+        return text;
+      }
+    };
     ytcenter.video.getFilename = function(stream){
       if (stream == null) return "";
       var duration = 0;
@@ -18408,7 +18421,7 @@
         pubyear = 0;
       }
       try {
-        var now = new Date();
+        var now = ytcenter.utils.now();
         nowtimestamp = Math.floor(now.getTime()/1000);
         nowsecs = now.getSeconds();
         nowmins = now.getMinutes();
@@ -18427,10 +18440,10 @@
         nowyear = 0;
       }
       var filename = ytcenter.utils.replaceTextAsString(ytcenter.settings.filename, {
-        title: ytcenter.video.title,
+        title: ytcenter.video.removeNonAlphanumericCharacters(ytcenter.video.title),
         videoid: ytcenter.video.id,
-        author: ytcenter.video.author,
-        channelname: ytcenter.video.channelname,
+        author: ytcenter.video.removeNonAlphanumericCharacters(ytcenter.video.author),
+        channelname: ytcenter.video.removeNonAlphanumericCharacters(ytcenter.video.channelname),
         resolution: (ytcenter.video.resolutions.hasOwnProperty(stream.quality) ? ytcenter.video.resolutions[stream.quality] : ''),
         itag: stream.itag,
         dimension: (stream.dimension ? stream.dimension : stream.size),
@@ -18465,6 +18478,7 @@
         pubmonth: ytcenter.utils.prefixText(pubmonth, "0", 2),
         pubyear: pubyear
       });
+      
       // Removing illegal characters for filename for OS
       if (uw.navigator.appVersion.toLowerCase().indexOf("win") != -1) {
         filename = filename.replace(new RegExp('[\\\\/:|]+', 'g'), "-");
@@ -18474,16 +18488,6 @@
         filename = filename.replace(":", "-");
       } else if (uw.navigator.appVersion.toLowerCase().indexOf("linux") != -1) {
         filename = filename.replace(new RegExp('[/\0]+', 'g'), "-");
-      }
-      
-      if (ytcenter.settings.fixfilename) {
-        var tmp = "";
-        for (var i = 0; i < filename.length; i++) {
-          if (filename.charAt(i).match(/[0-9a-zA-Z ]/i)) {
-            tmp += filename.charAt(i);
-          }
-        }
-        filename = tmp;
       }
       return filename;
     };
@@ -24317,26 +24321,43 @@
   function chrome_save(id, key, data) {
     if (typeof data !== "string") data = JSON.stringify(data);
     
-    var runtimeOrExtension = chrome.runtime && chrome.runtime.sendMessage ? "runtime" : "extension";
-    if (chrome[runtimeOrExtension]) {
-      chrome[runtimeOrExtension].sendMessage(JSON.stringify({ "method": "setLocalStorage", "key": key, "data": data }), function() {
-        callUnsafeWindow(id);
-      });
+    if (chrome && chrome.storage && chrome.storage.local) {
+      var storage = chrome.storage.local;
+      var details = {};
+      details[key] = data;
+      chrome.storage.local.set(details);
+      
     } else {
-      console.error("Chrome extension API is not present!");
+      console.warn("[Chrome] Chrome extension API is not present!");
       defaultSave(id, key, data);
     }
   }
 
   function chrome_load(id, key) {
-    var runtimeOrExtension = chrome.runtime && chrome.runtime.sendMessage ? "runtime" : "extension";
-    if (chrome[runtimeOrExtension]) {
-      chrome[runtimeOrExtension].sendMessage(JSON.stringify({ "method": "getLocalStorage", "key": key }), function(response) {
-        if (typeof response === "string") response = JSON.parse(response);
-        callUnsafeWindow(id, response.data);
-      });
+    if (chrome && chrome.storage && chrome.storage.local) {
+      var storage = chrome.storage.local;
+      var value = null;
+      if ((value = localStorage.getItem(key) || null) !== null) {
+        console.log("[Chrome] Moving settings from old method to new method for " + key);
+        var details = {};
+        details[key] = value;
+        
+        chrome.storage.local.set(details);
+        
+        localStorage.removeItem(key);
+        callUnsafeWindow(id, value);
+      } else {
+        storage.get(key, function(result) {
+          var res = {};
+          if (key in result) {
+            res = result[key];
+          }
+          
+          callUnsafeWindow(id, res);
+        });
+      }
     } else {
-      console.error("Chrome extension API is not present!");
+      console.warn("[Chrome] Chrome extension API is not present!");
       defaultLoad(id, key);
     }
   }
