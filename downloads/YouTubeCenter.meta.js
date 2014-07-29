@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            YouTube Center
 // @namespace       http://www.facebook.com/YouTubeCenter
-// @version         2.1.4
+// @version         2.1.5
 // @author          Jeppe Rune Mortensen (YePpHa)
 // @description     YouTube Center contains all kind of different useful functions which makes your visit on YouTube much more entertaining.
 // @icon            https://raw.github.com/YePpHa/YouTubeCenter/master/assets/logo-48x48.png
@@ -39,7 +39,7 @@
 // @grant           GM_registerMenuCommand
 // @updateURL       https://yeppha.github.io/downloads/YouTubeCenter.meta.js
 // @downloadURL     https://yeppha.github.io/downloads/YouTubeCenter.user.js
-// @updateVersion   151
+// @updateVersion   153
 // @run-at          document-start
 // @priority        9001
 // ==/UserScript==
