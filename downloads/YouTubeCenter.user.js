@@ -19,12 +19,12 @@
   COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
   IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
+**/
 // ==UserScript==
 // @id              YouTubeCenter
 // @name            YouTube Center
 // @namespace       http://www.facebook.com/YouTubeCenter
-// @version         2.1.6
+// @version         2.1.7
 // @author          Jeppe Rune Mortensen <jepperm@gmail.com>
 // @description     YouTube Center contains all kind of different useful functions which makes your visit on YouTube much more entertaining.
 // @icon            https://raw.github.com/YePpHa/YouTubeCenter/master/assets/icon48.png
@@ -75,7 +75,7 @@
 // @grant           unsafeWindow
 // @updateURL       https://yeppha.github.io/downloads/YouTubeCenter.meta.js
 // @downloadURL     https://yeppha.github.io/downloads/YouTubeCenter.user.js
-// @updateVersion   154
+// @updateVersion   156
 // @run-at          document-start
 // @priority        9001
 // @contributionURL https://github.com/YePpHa/YouTubeCenter/wiki/Donate
@@ -94,7 +94,7 @@
     if (typeof func === "string") {
       func = "function(){" + func + "}";
     }
-    script.appendChild(document.createTextNode("(" + func + ")(true, 0, false, 405);\n//# sourceURL=YouTubeCenter.js"));
+    script.appendChild(document.createTextNode("(" + func + ")(true, 0, false, 406);\n//# sourceURL=YouTubeCenter.js"));
     p.appendChild(script);
     p.removeChild(script);
   }
@@ -2704,8 +2704,8 @@
         unloads.push(unload);
       };
     })();
-    ytcenter.version = "2.1.6";
-    ytcenter.revision = 154;
+    ytcenter.version = "2.1.7";
+    ytcenter.revision = 156;
     ytcenter.icon = {};
     ytcenter.page = "none";
     ytcenter.feather = false;
@@ -21600,7 +21600,11 @@
             autohide = "3"
           }
         } else {
-          autohide = ytcenter.player.config.args.autohide;
+          if (ytcenter.player.config && ytcenter.player.config.args && (typeof ytcenter.player.config.args.autohide === "string" || typeof ytcenter.player.config.args.autohide === "number")) {
+            autohide = ytcenter.player.config.args.autohide;
+          } else {
+            autohide = "3";
+          }
         }
         if (autohide === "0") {
           pbh = playerBarHeightBoth;
