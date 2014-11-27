@@ -80,7 +80,7 @@
 // @priority        9001
 // @contributionURL https://github.com/YePpHa/YouTubeCenter/wiki/Donate
 // @license         MIT
-// @require         https://greasyfork.org/scripts/6688-youtube-center-translations/code/YouTube%20Center%20Translations.js?version=26138
+// @resource        translations https://yeppha.github.io/downloads/translations.json
 // ==/UserScript==
 
 (function(){
@@ -96,7 +96,7 @@
     if (typeof func === "string") {
       func = "function(){" + func + "}";
     }
-    script.appendChild(document.createTextNode("(" + func + ")(true, 0, false, 406, " + JSON.stringify(ytcenter_locales) + ");\n//# sourceURL=YouTubeCenter.js"));
+    script.appendChild(document.createTextNode("(" + func + ")(true, 0, false, 406, " + GM_getResourceText("translations") + ");\n//# sourceURL=YouTubeCenter.js"));
     p.appendChild(script);
     p.removeChild(script);
   }
