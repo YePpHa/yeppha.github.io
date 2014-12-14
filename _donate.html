@@ -1,0 +1,307 @@
+<html>
+  <head>
+    <title>YouTube Center - Donate</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-family: arial,sans-serif;
+        font-size: 13px;
+        font-size: 100%;
+      }
+      .body-container {
+        height: auto;
+        min-height: 100%;
+        background: #fafafa;
+      }
+      
+      .card-container {
+        padding: 6px;
+      }
+      
+      .card {
+        margin: 0 auto;
+        max-width: 945px;
+        width: auto;
+        background: #fff;
+        -moz-box-shadow: 0 1px 2px rgba(0,0,0,.1);
+        -ms-box-shadow: 0 1px 2px rgba(0,0,0,.1);
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.1);
+        box-shadow: 0 1px 2px rgba(0,0,0,.1);
+        -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        -webkit-border-radius: 2px;
+        border-radius: 2px;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        color: #333;
+        min-height: 40px;
+        
+        padding: 13px;
+      }
+      
+      .card h1 {
+        font-weight: 400;
+        color: #555;
+        margin: 0;
+      }
+      .paypal form {
+        margin: 0;
+      }
+      .paypal-submit {
+        float: right;
+      }
+      .clearfix:before,
+      .clearfix:after {
+        content: '.';
+        display: block;
+        height: 0;
+        visibility: hidden;
+      }
+      .clearfix:after {
+        clear: both;
+      }
+      .number {
+        text-align: right;
+        width: 60px;
+      }
+      .label {
+        margin-top: 6px;
+        display: block;
+      }
+      .option {
+        margin-left: 6px;
+      }
+      h4 {
+        padding: 0;
+        margin: 0;
+      }
+      .payment_methods {
+        display: inline-block;
+        font-size: 11px;
+        margin-top: 11px;
+        text-decoration: none;
+        color: #333;
+      }
+      .payment_methods:hover {
+        color: #0072e6;
+      }
+      #paypal, #bitcoin {
+        -moz-transition: opacity .3s linear;
+        -ms-transition: opacity .3s linear;
+        -o-transition: opacity .3s linear;
+        -webkit-transition: opacity .3s linear;
+        transition: opacity .3s linear;
+        
+        height: auto;
+      }
+      #paypal {
+        overflow: hidden;
+      }
+      #instructions {
+        -moz-transition: max-height 1s linear;
+        -ms-transition: max-height 1s linear;
+        -o-transition: max-height 1s linear;
+        -webkit-transition: max-height 1s linear;
+        transition: max-height 1s linear;
+        
+        height: auto;
+        overflow: hidden;
+      }
+      
+      #instructions {
+        max-height: 100%;
+      }
+      .bitcoin #instructions {
+        max-height: 0;
+      }
+      
+      #paypal {
+        opacity: 1;
+        display: block;
+        width: 100%;
+      }
+      
+      #bitcoin {
+        opacity: 0;
+        display: none;
+        width: 100%;
+      }
+      
+      #bitcoin > div {
+        float: left;
+      }
+      
+      .bitcoin #paypal {
+        opacity: 0;
+      }
+      
+      .bitcoin .instructions {
+        display: none;
+      }
+      .bitcoin #bitcoin {
+        opacity: 1;
+      }
+      .bitcoin #bitcoin-link {
+        display: none;
+      }
+      #paypal-content {
+        position: relative;
+      }
+      .code {
+        background-color: #f7f7f9;
+        border: 1px solid #e1e1e8;
+        padding: 2px 4px;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        color: #333;
+        text-decoration: none;
+      }
+        
+    </style>
+  </head>
+  <body>
+    <div class="body-container">
+      <div class="card-container">
+        <div class="card">
+          <h1>YouTube Center: Donate</h1>
+        </div>
+      </div>
+      <noscript>
+        <div class="card-container">
+          <div class="card">
+            <div class="content">
+              Please turn on JavaScript to view this content.
+            </div>
+          </div>
+        </div>
+      </noscript>
+      <div id="script-content" style="display: none">
+        <div id="instructions">
+          <div class="card-container">
+            <div class="card">
+              <div class="content">
+                <h4>Instructions:</h4>
+                <ol>
+                  <li>Input the amount of money you want to donate.</li>
+                  <li>Choose the currency you prefer.</li>
+                  <li>Click on the "Pay Now" button to donate.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-container">
+          <div class="card">
+            <div class="content">
+              Thank you for considering supporting me. I appreciate it a lot.
+            </div>
+          </div>
+        </div>
+        <div class="card-container">
+          <div class="card">
+            <div id="paypal-content" class="paypal content clearfix">
+              <div id="paypal">
+                <div>
+                  <span class="label">Amount</span>
+                  <input id="amount" type="text" value="10.0" class="number option"><br />
+                  <span class="label">Currency</span>
+                  <select id="currency" class="option">
+                    <option value="EUR">EUR €</option>
+                    <option value="USD">USD $</option>
+                    <option value="GBP">GBP £</option>
+                  </select>
+                  <script>
+                    function addEvent(elm, event, callback, capture) {
+                      if (elm.attachEvent) elm.attachEvent("on" + event, callback);
+                      else elm.addEventListener(event, callback, capture);
+                    }
+                    (function(){
+                      var a = document.getElementById("amount"),
+                          c = document.getElementById("currency"),
+                          defaultValue = 10.0,
+                          defaultCurrency = "EUR",
+                          currencies = ["EUR", "USD", "GBP"];
+                      addEvent(a, "change", function(){
+                        var b = parseFloat(a.value);
+                        if (isNaN(b) || b < 1) {
+                          a.value = defaultValue;
+                        } else {
+                          a.value = b;
+                        }
+                        document.getElementById("paypal_amount").value = a.value;
+                      }, false);
+                      addEvent(c, "change", function(){
+                        switch (c.value) {
+                          case "USD":
+                            document.getElementById("paypal_currency").value = "USD";
+                            break;
+                          case "GBP":
+                            document.getElementById("paypal_currency").value = "GBP";
+                            break;
+                          case "EUR":
+                          default:
+                            document.getElementById("paypal_currency").value = "EUR";
+                        }
+                      }, false);
+                    })();
+                  </script>
+                </div>
+                <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+                  <input type="hidden" name="cmd" value="_xclick">
+                  <input type="hidden" name="business" value="WBCAMLGT5T9J6">
+                  <input type="hidden" name="item_name" value="YouTube Center">
+                  <input type="hidden" name="amount" id="paypal_amount" value="10.00">
+                  <input type="hidden" name="currency_code" id="paypal_currency" value="EUR">
+                  <input type="image" class="paypal-submit" src="https://www.paypalobjects.com/en_US/i/btn/btn_paynow_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                  <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                </form>
+              </div>
+              <div id="bitcoin">
+                <div>
+                  <img src="https://raw.github.com/YePpHa/YouTubeCenter/master/assets/bitcoin.png" alt="QR Code" style="width:150px;height:150px;">
+                </div>
+                <div style="height: 150px;">
+                  <div>
+                    <p>To donate send the bitcoins to:</p>
+                    <a class="code" href="bitcoin:185TU5uqfYjXNkXTSBuTrmt5xnxJCnuMKw">185TU5uqfYjXNkXTSBuTrmt5xnxJCnuMKw</a><br />
+                  </div>
+                  <div>
+                    <div class="cb-tip-button" data-content-location="" data-href="//www.coinbase.com/tip_buttons/show_tip" data-to-user-id="51e5d34b75855f64a200004f"></div>
+                    <script>!function(d,s,id) {var js,cjs=d.getElementsByTagName(s)[0],e=d.getElementById(id);if(e){return;}js=d.createElement(s);js.id=id;js.src="https://www.coinbase.com/assets/tips.js";cjs.parentNode.insertBefore(js,cjs);}(document, 'script', 'coinbase-tips');</script>
+                  </div>
+                </div>
+              </div>
+              <a id="bitcoin-link" href="javascript:void(0);" onclick=";return false;" class="payment_methods">Use Bitcoin</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        (function(){
+          document.getElementById("script-content").style.display = "block";
+          addEvent(document.getElementById("bitcoin-link"), "click", function(){
+            document.getElementById("bitcoin").style.display = "block";
+            document.getElementById("paypal").style.position = "absolute";
+            document.getElementById("paypal").style.top = "0";
+            setTimeout(function(){
+              document.body.className += " bitcoin";
+              setTimeout(function(){
+                document.getElementById("paypal").style.position = "";
+                document.getElementById("paypal").style.top = "";
+                document.getElementById("paypal").style.display = "none";
+              }, 300);
+              setTimeout(function(){
+                document.getElementById("instructions").style.display = "none";
+              }, 1500);
+            }, 0);
+          }, false);
+        })();
+      </script>
+    </div>
+  </body>
+</html>
