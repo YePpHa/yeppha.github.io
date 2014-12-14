@@ -1,0 +1,3 @@
+[submodule "downloads"]
+	path = downloads
+	url = https://github.com/YePpHa/YouTubeCenter-release
