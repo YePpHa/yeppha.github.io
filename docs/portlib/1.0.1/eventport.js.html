@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>eventport.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="pl.EventPort.html">EventPort</a><ul class='methods'><li data-type='method'><a href="pl.EventPort.html#.connect">connect</a></li><li data-type='method'><a href="pl.EventPort.html#callMethod">callMethod</a></li><li data-type='method'><a href="pl.EventPort.html#connect">connect</a></li><li data-type='method'><a href="pl.EventPort.html#disconnect">disconnect</a></li><li data-type='method'><a href="pl.EventPort.html#disposeInternal">disposeInternal</a></li><li data-type='method'><a href="pl.EventPort.html#getChannel">getChannel</a></li><li data-type='method'><a href="pl.EventPort.html#getHandler">getHandler</a></li><li data-type='method'><a href="pl.EventPort.html#getId">getId</a></li><li data-type='method'><a href="pl.EventPort.html#getMethod">getMethod</a></li><li data-type='method'><a href="pl.EventPort.html#getReceiverId">getReceiverId</a></li><li data-type='method'><a href="pl.EventPort.html#handleRequestConnection">handleRequestConnection</a></li><li data-type='method'><a href="pl.EventPort.html#postMessage">postMessage</a></li><li data-type='method'><a href="pl.EventPort.html#removeMethod">removeMethod</a></li><li data-type='method'><a href="pl.EventPort.html#setMethod">setMethod</a></li><li data-type='method'><a href="pl.EventPort.html#setReceiverId">setReceiverId</a></li></ul></li><li><a href="pl.EventPortSpawner.html">EventPortSpawner</a><ul class='methods'><li data-type='method'><a href="pl.EventPortSpawner.html#disposeInternal">disposeInternal</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#getChannel">getChannel</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#getHandler">getHandler</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#getName">getName</a></li></ul></li><li><a href="pl.Port.html">Port</a><ul class='methods'><li data-type='method'><a href="pl.Port.html#callMethod">callMethod</a></li><li data-type='method'><a href="pl.Port.html#connect">connect</a></li><li data-type='method'><a href="pl.Port.html#disconnect">disconnect</a></li><li data-type='method'><a href="pl.Port.html#disposeInternal">disposeInternal</a></li><li data-type='method'><a href="pl.Port.html#getHandler">getHandler</a></li><li data-type='method'><a href="pl.Port.html#getId">getId</a></li><li data-type='method'><a href="pl.Port.html#getMethod">getMethod</a></li><li data-type='method'><a href="pl.Port.html#getReceiverId">getReceiverId</a></li><li data-type='method'><a href="pl.Port.html#handleRequestConnection">handleRequestConnection</a></li><li data-type='method'><a href="pl.Port.html#postMessage">postMessage</a></li><li data-type='method'><a href="pl.Port.html#removeMethod">removeMethod</a></li><li data-type='method'><a href="pl.Port.html#setMethod">setMethod</a></li><li data-type='method'><a href="pl.Port.html#setReceiverId">setReceiverId</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">eventport.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>goog.provide("pl.EventPort");
+
+goog.require("goog.events.EventHandler");
+
+goog.require("goog.json");
+
+goog.require("pl.Port");
+goog.require("pl.support.CustomEvent");
+goog.require("pl.support.State");
+
+/**
+ * The port using the CustomEvent API.
+ * @constructor
+ * @param {string} channel The channel to communicate through.
+ * @param {Object=} methods The methods the external ports can call.
+ * @extends {pl.Port}
+ */
+pl.EventPort = function(channel, methods) {
+  if (pl.support.CustomEvent === pl.support.State.NONE) throw new Error("CustomEvent not supported.");
+  pl.Port.call(this, methods);
+
+  this.channel_ = channel;
+
+  this.getHandler()
+    .listen(document.documentElement, this.getChannel(), this.channelHandler_, false);
+}
+goog.inherits(pl.EventPort, pl.Port);
+
+/**
+ * Returns the connected port.
+ * @param {string} channel The channel to communicate through.
+ * @param {string} name The name of the external port.
+ * @param {Object=} methods The methods the external ports can call.
+ * @return {pl.EventPort} The connected port.
+ */
+pl.EventPort.connect = function(channel, name, methods) {
+  var port = new pl.EventPort(channel, methods);
+  if (port.connect(name)) {
+    return port;
+  }
+  port.dispose();
+  return null;
+};
+
+/**
+ * @private {string}
+ */
+pl.EventPort.prototype.channel_;
+
+/**
+ * @override
+ */
+pl.EventPort.prototype.disposeInternal = function() {
+  goog.base(this, 'disposeInternal');
+
+  delete this.channel_;
+};
+
+/**
+ * @override
+ */
+pl.EventPort.prototype.postMessage_ = function(detail) {
+  var evt;
+  if (pl.support.CustomEvent === pl.support.State.FULL) {
+    evt = new CustomEvent(this.getChannel(), { 'detail': goog.json.serialize(detail) });
+  } else if (pl.support.CustomEvent === pl.support.State.PARTIAL) {
+    evt = document.createEvent("CustomEvent");
+    evt.initCustomEvent(this.getChannel(), true, true, goog.json.serialize(detail));
+  }
+  document.documentElement.dispatchEvent(evt);
+};
+
+/**
+ * Returns the channel.
+ * @return {string} The channel.
+ */
+pl.EventPort.prototype.getChannel = function() {
+  return this.channel_;
+};
+
+/**
+ * Attempts to handle the channel event.
+ * @private
+ * @param {goog.events.BrowserEvent} e The event.
+ */
+pl.EventPort.prototype.channelHandler_ = function(e) {
+  var browserEvent = e.getBrowserEvent();
+  var detail = goog.json.parse(browserEvent['detail']);
+
+  this.handleMessage(detail);
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 28 2015 19:22:47 GMT+0100 (Romance Standard Time) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
