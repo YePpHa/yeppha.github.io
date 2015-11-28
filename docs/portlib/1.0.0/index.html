@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Home - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="pl.EventPort.html">EventPort</a><ul class='methods'><li data-type='method'><a href="pl.EventPort.html#.connect">connect</a></li><li data-type='method'><a href="pl.EventPort.html#callMethod">callMethod</a></li><li data-type='method'><a href="pl.EventPort.html#connect">connect</a></li><li data-type='method'><a href="pl.EventPort.html#disconnect">disconnect</a></li><li data-type='method'><a href="pl.EventPort.html#disposeInternal">disposeInternal</a></li><li data-type='method'><a href="pl.EventPort.html#getChannel">getChannel</a></li><li data-type='method'><a href="pl.EventPort.html#getHandler">getHandler</a></li><li data-type='method'><a href="pl.EventPort.html#getId">getId</a></li><li data-type='method'><a href="pl.EventPort.html#getMethod">getMethod</a></li><li data-type='method'><a href="pl.EventPort.html#getReceiverId">getReceiverId</a></li><li data-type='method'><a href="pl.EventPort.html#handleRequestConnection">handleRequestConnection</a></li><li data-type='method'><a href="pl.EventPort.html#postMessage">postMessage</a></li><li data-type='method'><a href="pl.EventPort.html#removeMethod">removeMethod</a></li><li data-type='method'><a href="pl.EventPort.html#setMethod">setMethod</a></li><li data-type='method'><a href="pl.EventPort.html#setReceiverId">setReceiverId</a></li></ul></li><li><a href="pl.EventPortSpawner.html">EventPortSpawner</a><ul class='methods'><li data-type='method'><a href="pl.EventPortSpawner.html#disposeInternal">disposeInternal</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#getChannel">getChannel</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#getHandler">getHandler</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#getName">getName</a></li></ul></li><li><a href="pl.Port.html">Port</a><ul class='methods'><li data-type='method'><a href="pl.Port.html#callMethod">callMethod</a></li><li data-type='method'><a href="pl.Port.html#connect">connect</a></li><li data-type='method'><a href="pl.Port.html#disconnect">disconnect</a></li><li data-type='method'><a href="pl.Port.html#disposeInternal">disposeInternal</a></li><li data-type='method'><a href="pl.Port.html#getHandler">getHandler</a></li><li data-type='method'><a href="pl.Port.html#getId">getId</a></li><li data-type='method'><a href="pl.Port.html#getMethod">getMethod</a></li><li data-type='method'><a href="pl.Port.html#getReceiverId">getReceiverId</a></li><li data-type='method'><a href="pl.Port.html#handleRequestConnection">handleRequestConnection</a></li><li data-type='method'><a href="pl.Port.html#postMessage">postMessage</a></li><li data-type='method'><a href="pl.Port.html#removeMethod">removeMethod</a></li><li data-type='method'><a href="pl.Port.html#setMethod">setMethod</a></li><li data-type='method'><a href="pl.Port.html#setReceiverId">setReceiverId</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+    <section class="readme">
+        <article><h1>Port Library</h1><p>Port Library is a JavaScript library that can create a synchronous connection between two sandboxes as long as the two sandboxes have access to the same event pool. The library was created for content scripts (userscripts) needing a direct pipeline to the page sandbox.</p>
+<h2>Dependencies</h2><p>The library is dependent on <a href="https://github.com/google/closure-library/">Google Closure Library</a>.</p>
+<h2>Browser Support</h2><p>The only browser dependency is the support of the <a href="http://caniuse.com/#feat=customevent">Custom Event API</a>.</p>
+<h2>Examples</h2><h3>Port Spawner</h3><p>In the example below, there are two sandboxes: the page sandbox and the content script sandbox. Here the content sandbox creates two different ports to the page sandbox.</p>
+<pre class="prettyprint source lang-JavaScript"><code>// File: page.js
+var spawner = new pl.EventPortSpawner(&quot;channel&quot;, &quot;name&quot;);
+spawner.listen(pl.EventPortSpawner.EventType.PORT_SPAWNED, function(port) {
+  // Handle spawned ports, e.g. set the port's methods.
+});
+
+// File: content.js
+var port = pl.EventPort.connect(&quot;channel&quot;, &quot;name&quot;);
+var port2 = pl.EventPort.connect(&quot;channel&quot;, &quot;name&quot;);</code></pre><h3>Using methods</h3><pre class="prettyprint source lang-JavaScript"><code>// File: page.js
+var extPort = ...;
+extPort.setMethod(&quot;external-multiply&quot;, function(a, b) {
+  return a * b;
+});
+
+// File: content.js
+var port = ...;
+var returnValue = port.callMethod(&quot;external-multiply&quot;, 3, 7);
+
+console.log(returnValue); // output: 21.</code></pre><h3>Using promises</h3><p>Port library supports returning of Promises in the methods.</p>
+<pre class="prettyprint source lang-JavaScript"><code>// File: page.js
+var extPort = ...;
+extPort.setMethod(&quot;async-load&quot;, function(url) {
+  return promiseXhr(url); // Returns a Promise, which will resolve on load.
+});
+
+// File: content.js
+var port = ...;
+port.callMethod(&quot;async-load&quot;, &quot;https://www.google.com/&quot;)
+.then(function(html) {
+  console.log(html); // The HTML of https://www.google.com/
+});</code></pre><h2>API Docs</h2><p>The docs can be generated by running:</p>
+<pre class="prettyprint source"><code>$ npm run-script generate-docs</code></pre><p>The generated docs can be found in <code>./docs</code>.</p></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sat Nov 28 2015 15:35:11 GMT+0100 (Romance Standard Time) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
