@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Home - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="pl.EventPort.html">EventPort</a><ul class='methods'><li data-type='method'><a href="pl.EventPort.html#.connect">connect</a></li><li data-type='method'><a href="pl.EventPort.html#callMethod">callMethod</a></li><li data-type='method'><a href="pl.EventPort.html#connect">connect</a></li><li data-type='method'><a href="pl.EventPort.html#disconnect">disconnect</a></li><li data-type='method'><a href="pl.EventPort.html#disposeInternal">disposeInternal</a></li><li data-type='method'><a href="pl.EventPort.html#getChannel">getChannel</a></li><li data-type='method'><a href="pl.EventPort.html#getHandler">getHandler</a></li><li data-type='method'><a href="pl.EventPort.html#getId">getId</a></li><li data-type='method'><a href="pl.EventPort.html#getMethod">getMethod</a></li><li data-type='method'><a href="pl.EventPort.html#getMethods">getMethods</a></li><li data-type='method'><a href="pl.EventPort.html#getName">getName</a></li><li data-type='method'><a href="pl.EventPort.html#getReceiverId">getReceiverId</a></li><li data-type='method'><a href="pl.EventPort.html#handleRequestConnection">handleRequestConnection</a></li><li data-type='method'><a href="pl.EventPort.html#postMessage">postMessage</a></li><li data-type='method'><a href="pl.EventPort.html#removeMethod">removeMethod</a></li><li data-type='method'><a href="pl.EventPort.html#setMethod">setMethod</a></li><li data-type='method'><a href="pl.EventPort.html#setReceiverId">setReceiverId</a></li></ul></li><li><a href="pl.EventPortSpawner.html">EventPortSpawner</a><ul class='methods'><li data-type='method'><a href="pl.EventPortSpawner.html#disposeInternal">disposeInternal</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#getChannel">getChannel</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#getHandler">getHandler</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#getMethod">getMethod</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#getMethods">getMethods</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#getName">getName</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#removeMethod">removeMethod</a></li></ul></li><li><a href="pl.Port.html">Port</a><ul class='methods'><li data-type='method'><a href="pl.Port.html#callMethod">callMethod</a></li><li data-type='method'><a href="pl.Port.html#connect">connect</a></li><li data-type='method'><a href="pl.Port.html#disconnect">disconnect</a></li><li data-type='method'><a href="pl.Port.html#disposeInternal">disposeInternal</a></li><li data-type='method'><a href="pl.Port.html#getHandler">getHandler</a></li><li data-type='method'><a href="pl.Port.html#getId">getId</a></li><li data-type='method'><a href="pl.Port.html#getMethod">getMethod</a></li><li data-type='method'><a href="pl.Port.html#getMethods">getMethods</a></li><li data-type='method'><a href="pl.Port.html#getName">getName</a></li><li data-type='method'><a href="pl.Port.html#getReceiverId">getReceiverId</a></li><li data-type='method'><a href="pl.Port.html#handleRequestConnection">handleRequestConnection</a></li><li data-type='method'><a href="pl.Port.html#postMessage">postMessage</a></li><li data-type='method'><a href="pl.Port.html#removeMethod">removeMethod</a></li><li data-type='method'><a href="pl.Port.html#setMethod">setMethod</a></li><li data-type='method'><a href="pl.Port.html#setReceiverId">setReceiverId</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+    <section class="readme">
+        <article><h1>Port Library</h1><p>Port Library is a JavaScript library that can create a synchronous connection
+between two sandboxes as long as the two sandboxes have access to the same event
+pool. The library was created for content scripts (userscripts) needing a direct
+pipeline to the page sandbox.</p>
+<h2>Build</h2><h3>Build preparation.</h3><p>The library can be build to use with a non-closure library. To build the library
+you need to have installed the following tools:</p>
+<ul>
+<li><a href="https://nodejs.org/en/">Node</a></li>
+<li><a href="http://bower.io/">Bower</a></li>
+<li><a href="http://gulpjs.com/">Gulp</a></li>
+</ul>
+<p>Afterwards, you need to make sure that you have downloaded all the dependencies:</p>
+<pre class="prettyprint source"><code>$ npm install
+$ bower install</code></pre><p>After that you're all set.</p>
+<h3>Library building</h3><p>You can build the library by using the cmd:</p>
+<pre class="prettyprint source"><code>$ gulp build-export</code></pre><p>Please note that the library by default uses the Google Promise library provided
+by the
+<a href="http://google.github.io/closure-library/api/class_goog_Promise.html">Google Closure Library</a>.
+If you don't want to use the Promise library by Google you can add the argument
+'--useNativePromise' to only use the native Promise in the browser. The Promise
+used by the library can accessed from <code>portlib.Promise</code>.</p>
+<h3>Test build</h3><p>To build</p>
+<pre class="prettyprint source"><code>$ gulp chrome-test
+$ gulp userscript-test</code></pre><p>Please note that the build system uses
+<a href="https://developers.google.com/closure/compiler/">Google Closure Compiler</a>,
+which depends on Java.</p>
+<h2>Browser Support</h2><p>The only browser dependency is the support of the
+<a href="http://caniuse.com/#feat=customevent">Custom Event API</a>.</p>
+<h2>Tested in</h2><p>Currently tested in:</p>
+<ul>
+<li>Chrome v46 (with Tampermonkey and a Chrome extension)</li>
+<li>Firefox v39, v41 and v42 (with Greasemonkey)</li>
+</ul>
+<h3>Limitations</h3><p>Port Library makes it easy to create a pipeline to the page sandbox. However,
+there are some limitations. The limitations are as follows:</p>
+<ul>
+<li>All objects that are transferred through the Port Library will be serialized,
+which means that objects that can't be serialized will throw an error. Also
+serialized instances of classes will not be restored i.e. an instance of the
+Date class will only be an object with the values of the Date instance when
+it has been serialized.</li>
+<li>It's not possible to transfer functions as they can't be serialized. If your
+function is asynchronous you need to return a
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>
+instead.</li>
+</ul>
+<h2>Examples</h2><h3>Port Spawner</h3><p>In the example below, there are two sandboxes: the page sandbox and the content
+script sandbox. Here the content sandbox creates two different ports to the page
+sandbox.</p>
+<pre class="prettyprint source lang-JavaScript"><code>// File: page.js
+var spawner = new pl.EventPortSpawner(&quot;channel&quot;, &quot;name&quot;);
+spawner.listen(pl.EventPortSpawner.EventType.PORT_SPAWNED, function(port) {
+  // Handle spawned ports, e.g. set the port's methods.
+});
+
+// File: content.js
+var port = pl.EventPort.connect(&quot;channel&quot;, &quot;name&quot;);
+var port2 = pl.EventPort.connect(&quot;channel&quot;, &quot;name&quot;);</code></pre><h3>Using methods</h3><pre class="prettyprint source lang-JavaScript"><code>// File: page.js
+var extPort = ...;
+extPort.setMethod(&quot;external-multiply&quot;, function(a, b) {
+  return a * b;
+});
+
+// File: content.js
+var port = ...;
+var returnValue = port.callMethod(&quot;external-multiply&quot;, 3, 7);
+
+console.log(returnValue); // output: 21.</code></pre><h3>Using promises</h3><p>Port library supports returning of Promises in the methods.</p>
+<pre class="prettyprint source lang-JavaScript"><code>// File: page.js
+var extPort = ...;
+extPort.setMethod(&quot;async-load&quot;, function(url) {
+  return promiseXhr(url); // Returns a Promise, which will resolve on load.
+});
+
+// File: content.js
+var port = ...;
+port.callMethod(&quot;async-load&quot;, &quot;https://www.google.com/&quot;)
+.then(function(html) {
+  console.log(html); // The HTML of https://www.google.com/
+});</code></pre><h2>API Docs</h2><p>The docs can be generated by running:</p>
+<pre class="prettyprint source"><code>$ npm run-script generate-docs</code></pre><p>The generated docs can be found in <code>./docs</code> or you can use the pre-generated
+docs at http://yeppha.github.io/docs/portlib/1.0.2/index.html.</p>
+<h2>Todo</h2><ul>
+<li>Compile the library for people not using Google Closure.</li>
+<li>Implement proper error catching if an error occurs in a function.</li>
+<li>Make the user pick what Promise library they want to use or if they want
+to use the native Promise API implemented by the browser. Currently the
+library uses
+<a href="http://google.github.io/closure-library/api/class_goog_Promise.html">goog.Promise</a>
+for Promises to support older browsers.</li>
+</ul>
+<h2>License</h2><p>The MIT License (MIT)</p>
+<p>Copyright (c) 2015 Jeppe Rune Mortensen</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the &quot;Software&quot;), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p></article>
+    </section>
+
+
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        exports.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description">Exports file for usage in non-closure projects.</div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li><a href="mailto:jepperm@gmail.com">Jeppe Rune Mortensen</a></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="exports.js.html">exports.js</a>, <a href="exports.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sun Nov 29 2015 15:32:54 GMT+0100 (Romance Standard Time) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

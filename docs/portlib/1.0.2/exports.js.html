@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>exports.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="pl.EventPort.html">EventPort</a><ul class='methods'><li data-type='method'><a href="pl.EventPort.html#.connect">connect</a></li><li data-type='method'><a href="pl.EventPort.html#callMethod">callMethod</a></li><li data-type='method'><a href="pl.EventPort.html#connect">connect</a></li><li data-type='method'><a href="pl.EventPort.html#disconnect">disconnect</a></li><li data-type='method'><a href="pl.EventPort.html#disposeInternal">disposeInternal</a></li><li data-type='method'><a href="pl.EventPort.html#getChannel">getChannel</a></li><li data-type='method'><a href="pl.EventPort.html#getHandler">getHandler</a></li><li data-type='method'><a href="pl.EventPort.html#getId">getId</a></li><li data-type='method'><a href="pl.EventPort.html#getMethod">getMethod</a></li><li data-type='method'><a href="pl.EventPort.html#getMethods">getMethods</a></li><li data-type='method'><a href="pl.EventPort.html#getName">getName</a></li><li data-type='method'><a href="pl.EventPort.html#getReceiverId">getReceiverId</a></li><li data-type='method'><a href="pl.EventPort.html#handleRequestConnection">handleRequestConnection</a></li><li data-type='method'><a href="pl.EventPort.html#postMessage">postMessage</a></li><li data-type='method'><a href="pl.EventPort.html#removeMethod">removeMethod</a></li><li data-type='method'><a href="pl.EventPort.html#setMethod">setMethod</a></li><li data-type='method'><a href="pl.EventPort.html#setReceiverId">setReceiverId</a></li></ul></li><li><a href="pl.EventPortSpawner.html">EventPortSpawner</a><ul class='methods'><li data-type='method'><a href="pl.EventPortSpawner.html#disposeInternal">disposeInternal</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#getChannel">getChannel</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#getHandler">getHandler</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#getMethod">getMethod</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#getMethods">getMethods</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#getName">getName</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#removeMethod">removeMethod</a></li></ul></li><li><a href="pl.Port.html">Port</a><ul class='methods'><li data-type='method'><a href="pl.Port.html#callMethod">callMethod</a></li><li data-type='method'><a href="pl.Port.html#connect">connect</a></li><li data-type='method'><a href="pl.Port.html#disconnect">disconnect</a></li><li data-type='method'><a href="pl.Port.html#disposeInternal">disposeInternal</a></li><li data-type='method'><a href="pl.Port.html#getHandler">getHandler</a></li><li data-type='method'><a href="pl.Port.html#getId">getId</a></li><li data-type='method'><a href="pl.Port.html#getMethod">getMethod</a></li><li data-type='method'><a href="pl.Port.html#getMethods">getMethods</a></li><li data-type='method'><a href="pl.Port.html#getName">getName</a></li><li data-type='method'><a href="pl.Port.html#getReceiverId">getReceiverId</a></li><li data-type='method'><a href="pl.Port.html#handleRequestConnection">handleRequestConnection</a></li><li data-type='method'><a href="pl.Port.html#postMessage">postMessage</a></li><li data-type='method'><a href="pl.Port.html#removeMethod">removeMethod</a></li><li data-type='method'><a href="pl.Port.html#setMethod">setMethod</a></li><li data-type='method'><a href="pl.Port.html#setReceiverId">setReceiverId</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">exports.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview Exports file for usage in non-closure projects.
+ * @author Jeppe Rune Mortensen &lt;jepperm@gmail.com>
+ */
+
+goog.provide("pl.exports");
+
+goog.require("pl.Promise");
+
+goog.require("pl.EventPort");
+goog.require("pl.EventPortSpawner");
+
+goog.require("goog.events.Event");
+
+/** Exports for the Promise object */
+pl.exports['Promise'] = pl.Promise;
+if (!pl.useNativePromise) {
+  pl.Promise['all'] = pl.Promise.all;
+  pl.Promise['race'] = pl.Promise.race;
+  pl.Promise['resolve'] = pl.Promise.resolve;
+  pl.Promise['reject'] = pl.Promise.reject;
+  pl.Promise.prototype['cancel'] = pl.Promise.prototype.cancel;
+  pl.Promise.prototype['then'] = pl.Promise.prototype.then;
+  pl.Promise.prototype['thenAlways'] = pl.Promise.prototype.thenAlways;
+  pl.Promise.prototype['thenCatch'] = pl.Promise.prototype.thenCatch;
+  pl.Promise.prototype['thenVoid'] = pl.Promise.prototype.thenVoid;
+}
+
+/** Exports for the Event object */
+goog.events.Event.prototype['preventDefault'] = goog.events.Event.preventDefault;
+goog.events.Event.prototype['stopPropagation'] = goog.events.Event.stopPropagation;
+goog.events.Event.prototype['currentTarget'] = goog.events.Event.currentTarget;
+goog.events.Event.prototype['defaultPrevented'] = goog.events.Event.defaultPrevented;
+goog.events.Event.prototype['row'] = goog.events.Event.row;
+goog.events.Event.prototype['rowNode'] = goog.events.Event.rowNode;
+goog.events.Event.prototype['target'] = goog.events.Event.target;
+goog.events.Event.prototype['type'] = goog.events.Event.type;
+
+/** Exports the EventPort class and its prototype properties */
+pl.exports['EventPort'] = pl.EventPort;
+pl.EventPort.prototype['connect'] = pl.EventPort.prototype.connect;
+pl.EventPort.prototype['disconnect'] = pl.EventPort.prototype.disconnect;
+pl.EventPort.prototype['callMethod'] = pl.EventPort.prototype.callMethod;
+pl.EventPort.prototype['getChannel'] = pl.EventPort.prototype.getChannel;
+pl.EventPort.prototype['getId'] = pl.EventPort.prototype.getId;
+pl.EventPort.prototype['getMethod'] = pl.EventPort.prototype.getMethod;
+pl.EventPort.prototype['getMethods'] = pl.EventPort.prototype.getMethods;
+pl.EventPort.prototype['getReceiverId'] = pl.EventPort.prototype.getReceiverId;
+pl.EventPort.prototype['removeMethod'] = pl.EventPort.prototype.removeMethod;
+pl.EventPort.prototype['setMethod'] = pl.EventPort.prototype.setMethod;
+pl.EventPort.prototype['setReceiverId'] = pl.EventPort.prototype.setReceiverId;
+
+/** The listenable prototype properties for EventPort */
+pl.EventPort.prototype['hasListener'] = pl.EventPort.prototype.hasListener;
+pl.EventPort.prototype['listen'] = pl.EventPort.prototype.listen;
+pl.EventPort.prototype['listenOnce'] = pl.EventPort.prototype.listenOnce;
+pl.EventPort.prototype['removeAllListeners'] = pl.EventPort.prototype.removeAllListeners;
+pl.EventPort.prototype['unlisten'] = pl.EventPort.prototype.unlisten;
+pl.EventPort.prototype['unlistenByKey'] = pl.EventPort.prototype.unlistenByKey;
+
+/** The disposable prototype properties for EventPort */
+pl.EventPort.prototype['dispose'] = pl.EventPort.prototype.dispose;
+pl.EventPort.prototype['isDisposed'] = pl.EventPort.prototype.isDisposed;
+pl.EventPort.prototype['registerDisposable'] = pl.EventPort.prototype.registerDisposable;
+
+/** Exports for the EventPort static methods */
+pl.EventPort['connect'] = pl.EventPort.connect;
+
+/** Exports the EventPortSpawner and its prototype properties */
+pl.exports['EventPortSpawner'] = pl.EventPortSpawner;
+pl.EventPortSpawner.prototype['getChannel'] = pl.EventPortSpawner.prototype.getChannel;
+pl.EventPortSpawner.prototype['getName'] = pl.EventPortSpawner.prototype.getName;
+pl.EventPortSpawner.prototype['getMethod'] = pl.EventPortSpawner.prototype.getMethod;
+pl.EventPortSpawner.prototype['getMethods'] = pl.EventPortSpawner.prototype.getMethods;
+pl.EventPortSpawner.prototype['removeMethod'] = pl.EventPortSpawner.prototype.removeMethod;
+
+/** The listenable prototype properties for EventPortSpawner */
+pl.EventPortSpawner.prototype['hasListener'] = pl.EventPortSpawner.prototype.hasListener;
+pl.EventPortSpawner.prototype['listen'] = pl.EventPortSpawner.prototype.listen;
+pl.EventPortSpawner.prototype['listenOnce'] = pl.EventPortSpawner.prototype.listenOnce;
+pl.EventPortSpawner.prototype['removeAllListeners'] = pl.EventPortSpawner.prototype.removeAllListeners;
+pl.EventPortSpawner.prototype['unlisten'] = pl.EventPortSpawner.prototype.unlisten;
+pl.EventPortSpawner.prototype['unlistenByKey'] = pl.EventPortSpawner.prototype.unlistenByKey;
+
+/** The disposable prototype properties for EventPortSpawner */
+pl.EventPortSpawner.prototype['dispose'] = pl.EventPortSpawner.prototype.dispose;
+pl.EventPortSpawner.prototype['isDisposed'] = pl.EventPortSpawner.prototype.isDisposed;
+pl.EventPortSpawner.prototype['registerDisposable'] = pl.EventPortSpawner.prototype.registerDisposable;
+
+/** Exports the EventPortSpawner EventType enum */
+pl.EventPortSpawner['EventType'] = pl.EventPortSpawner.EventType;
+pl.EventPortSpawner.EventType['PORT_SPAWNED'] = pl.EventPortSpawner.EventType.PORT_SPAWNED;
+
+/** The window object is not the real window. */
+window['exports'] = pl.exports;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sun Nov 29 2015 15:32:54 GMT+0100 (Romance Standard Time) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

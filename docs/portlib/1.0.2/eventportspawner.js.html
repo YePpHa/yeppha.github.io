@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>eventportspawner.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="pl.EventPort.html">EventPort</a><ul class='methods'><li data-type='method'><a href="pl.EventPort.html#.connect">connect</a></li><li data-type='method'><a href="pl.EventPort.html#callMethod">callMethod</a></li><li data-type='method'><a href="pl.EventPort.html#connect">connect</a></li><li data-type='method'><a href="pl.EventPort.html#disconnect">disconnect</a></li><li data-type='method'><a href="pl.EventPort.html#disposeInternal">disposeInternal</a></li><li data-type='method'><a href="pl.EventPort.html#getChannel">getChannel</a></li><li data-type='method'><a href="pl.EventPort.html#getHandler">getHandler</a></li><li data-type='method'><a href="pl.EventPort.html#getId">getId</a></li><li data-type='method'><a href="pl.EventPort.html#getMethod">getMethod</a></li><li data-type='method'><a href="pl.EventPort.html#getMethods">getMethods</a></li><li data-type='method'><a href="pl.EventPort.html#getName">getName</a></li><li data-type='method'><a href="pl.EventPort.html#getReceiverId">getReceiverId</a></li><li data-type='method'><a href="pl.EventPort.html#handleRequestConnection">handleRequestConnection</a></li><li data-type='method'><a href="pl.EventPort.html#postMessage">postMessage</a></li><li data-type='method'><a href="pl.EventPort.html#removeMethod">removeMethod</a></li><li data-type='method'><a href="pl.EventPort.html#setMethod">setMethod</a></li><li data-type='method'><a href="pl.EventPort.html#setReceiverId">setReceiverId</a></li></ul></li><li><a href="pl.EventPortSpawner.html">EventPortSpawner</a><ul class='methods'><li data-type='method'><a href="pl.EventPortSpawner.html#disposeInternal">disposeInternal</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#getChannel">getChannel</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#getHandler">getHandler</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#getMethod">getMethod</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#getMethods">getMethods</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#getName">getName</a></li><li data-type='method'><a href="pl.EventPortSpawner.html#removeMethod">removeMethod</a></li></ul></li><li><a href="pl.Port.html">Port</a><ul class='methods'><li data-type='method'><a href="pl.Port.html#callMethod">callMethod</a></li><li data-type='method'><a href="pl.Port.html#connect">connect</a></li><li data-type='method'><a href="pl.Port.html#disconnect">disconnect</a></li><li data-type='method'><a href="pl.Port.html#disposeInternal">disposeInternal</a></li><li data-type='method'><a href="pl.Port.html#getHandler">getHandler</a></li><li data-type='method'><a href="pl.Port.html#getId">getId</a></li><li data-type='method'><a href="pl.Port.html#getMethod">getMethod</a></li><li data-type='method'><a href="pl.Port.html#getMethods">getMethods</a></li><li data-type='method'><a href="pl.Port.html#getName">getName</a></li><li data-type='method'><a href="pl.Port.html#getReceiverId">getReceiverId</a></li><li data-type='method'><a href="pl.Port.html#handleRequestConnection">handleRequestConnection</a></li><li data-type='method'><a href="pl.Port.html#postMessage">postMessage</a></li><li data-type='method'><a href="pl.Port.html#removeMethod">removeMethod</a></li><li data-type='method'><a href="pl.Port.html#setMethod">setMethod</a></li><li data-type='method'><a href="pl.Port.html#setReceiverId">setReceiverId</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">eventportspawner.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>goog.provide("pl.EventPortSpawner");
+goog.provide("pl.EventPortSpawner.EventType");
+
+goog.require("goog.events.EventHandler");
+goog.require("goog.events.EventTarget");
+
+goog.require("goog.json");
+
+goog.require("pl.Port");
+goog.require("pl.EventPort");
+
+/**
+ * The port spawner. It accpets connection requests and spawns a new port for that specific connection.
+ * @constructor
+ * @param {string} channel The channel.
+ * @param {string} name The name of the event port spawner that will be given to its spawned ports.
+ * @param {Object=} opt_methods The methods that will be callable.
+ * @extends {goog.events.EventTarget}
+ */
+pl.EventPortSpawner = function(channel, name, opt_methods) {
+  goog.base(this);
+  this.channel_ = channel;
+  this.name_ = name;
+  this.methods_ = opt_methods;
+
+  this.getHandler()
+    .listen(document.documentElement, this.getChannel(), this.channelHandler_, false);
+};
+goog.inherits(pl.EventPortSpawner, goog.events.EventTarget);
+
+/**
+ * @enum {!string}
+ */
+pl.EventPortSpawner.EventType = {
+  /** Whenever a port has been spawned */
+  PORT_SPAWNED: 'port-spawned'
+};
+
+/**
+ * @private {goog.events.EventHandler}
+ */
+pl.EventPortSpawner.prototype.handler_;
+
+/**
+ * @private {string}
+ */
+pl.EventPortSpawner.prototype.channel_;
+
+/**
+ * @private {string}
+ */
+pl.EventPortSpawner.prototype.name_;
+
+/**
+ * @private {Object}
+ */
+pl.EventPortSpawner.prototype.methods_;
+
+/**
+ * @override
+ */
+pl.EventPortSpawner.prototype.disposeInternal = function() {
+  goog.base(this, 'disposeInternal');
+
+  if (this.handler_) {
+    this.handler_.dispose();
+    delete this.handler_;
+  }
+
+  delete this.channel_;
+  delete this.name_;
+};
+
+/**
+ * Returns the event handler.
+ * @protected
+ * @return {goog.events.EventHandler} The event handler.
+ */
+pl.EventPortSpawner.prototype.getHandler = function() {
+  if (!this.handler_) {
+    this.handler_ = new goog.events.EventHandler(this);
+  }
+  return this.handler_;
+};
+
+/**
+ * Returns the channel.
+ * @return {string} The channel.
+ */
+pl.EventPortSpawner.prototype.getChannel = function() {
+  return this.channel_;
+};
+
+/**
+ * Returns the name.
+ * @return {string} The name.
+ */
+pl.EventPortSpawner.prototype.getName = function() {
+  return this.name_;
+};
+
+/**
+ * Returns the methods.
+ * @param {string} name The method name.
+ * @return {function} The method.
+ */
+pl.EventPortSpawner.prototype.getMethod = function(name) {
+  return this.methods_[name];
+};
+
+/**
+ * Returns the methods.
+ * @return {Object=} The methods.
+ */
+pl.EventPortSpawner.prototype.getMethods = function() {
+  return this.methods_;
+};
+
+/**
+ * Remove the method.
+ * @param {string} method The method name to remove.
+ * @return {boolean} Whether the method was removed.
+ */
+pl.EventPortSpawner.prototype.removeMethod = function(method) {
+  if (method in this.methods) {
+    delete this.methods[method];
+    return true;
+  }
+  return false;
+};
+
+/**
+ * Attempts to handle the channel event.
+ * @param {goog.events.BrowserEvent} e The event.
+ * @private
+ */
+pl.EventPortSpawner.prototype.channelHandler_ = function(e) {
+  var browserEvent = e.getBrowserEvent();
+  var detail = goog.json.parse(browserEvent['detail']);
+
+  if (detail['type'] === pl.Port.MethodType.REQUEST_CONNECTION &amp;&amp; detail['data'] === this.getName()) {
+    var port = new pl.EventPort(this.getChannel(), this.getMethods(), this.getName());
+    port.handleRequestConnection(detail);
+
+    if (port.getReceiverId()) {
+      var evt = new goog.events.Event(pl.EventPortSpawner.EventType.PORT_SPAWNED, this);
+      evt.detail = port;
+      this.dispatchEvent(evt);
+    }
+  }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sun Nov 29 2015 15:32:54 GMT+0100 (Romance Standard Time) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
